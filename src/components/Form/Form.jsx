@@ -1,26 +1,30 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
+// import { useForm } from 'react-hook-form';
 import { Report } from 'notiflix/build/notiflix-report-aio';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-class Form extends Component {
-  state = {
-    name: '',
-    number: '',
-  };
+function Form({ contacts, onSubmit }) {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-  handleChange = e => {
+  const handleChange = e => {
     const marker = e.currentTarget.name;
-    // const { name, value } = e.currentTarget;
-
-    // this.setState({ [name]: value });
-    this.setState({ [marker]: e.currentTarget.value });
+    switch (marker) {
+      case 'name':
+        setName(e.currentTarget.value);
+        break;
+      case 'number':
+        setNumber(e.currentTarget.value);
+        break;
+      default:
+        return;
+    }
   };
 
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    const { name, number } = this.state;
-    if (this.props.contacts.find(contact => contact.name === name)) {
+    if (contacts.find(contact => contact.name === name)) {
       Report.warning(
         'Hey!',
         `Seems ${name} is already in your contact list...`,
@@ -29,50 +33,46 @@ class Form extends Component {
       return;
     }
 
-    this.props.onSubmit(name, number);
-    this.reset();
+    onSubmit(name, number);
+    reset();
   };
 
-  reset = () => {
-    this.setState({ name: '', number: '' });
+  const reset = () => {
+    setName('');
+    setNumber('');
   };
 
-  render() {
-    return (
-      <StyledForm onSubmit={this.handleSubmit}>
-        <StyledLable>
-          Name
-          <StyledInput
-            type="text"
-            name="name"
-            value={this.state.name}
-            onChange={this.handleChange}
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-            required
-          />
-        </StyledLable>
-        <StyledLable>
-          Number
-          <StyledInput
-            type="tel"
-            name="number"
-            value={this.state.number}
-            onChange={this.handleChange}
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-            required
-          />
-        </StyledLable>
-        <StyledBtn
-          type="submit"
-          disabled={!this.state.name || !this.state.number}
-        >
-          Add contact
-        </StyledBtn>
-      </StyledForm>
-    );
-  }
+  return (
+    <StyledForm onSubmit={handleSubmit}>
+      <StyledLable>
+        Name
+        <StyledInput
+          type="text"
+          name="name"
+          value={name}
+          onChange={handleChange}
+          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+          required
+        />
+      </StyledLable>
+      <StyledLable>
+        Number
+        <StyledInput
+          type="tel"
+          name="number"
+          value={number}
+          onChange={handleChange}
+          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+          title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+          required
+        />
+      </StyledLable>
+      <StyledBtn type="submit" disabled={!name || !number}>
+        Add contact
+      </StyledBtn>
+    </StyledForm>
+  );
 }
 
 Form.propTypes = {
@@ -109,11 +109,9 @@ const StyledInput = styled.input`
 const StyledBtn = styled.button`
   font-family: inherit;
   font-size: 40px;
-
   color: ${props => (props.disabled ? `#7c7a7a` : ` #210672`)};
   width: 150px;
   height: 50px;
-
   background-color: ${props => (props.disabled ? `#afaaaa` : `#4db0ea`)};
   border-radius: 10px;
   -moz-box-shadow: 6px 8px 4px #333333;
