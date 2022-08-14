@@ -4,6 +4,12 @@ import useLocalStorage from 'hooks/localStorage';
 import Form from './Form';
 import ContactList from './ContactList';
 import Filter from './Filter';
+
+import Lang from './Lang';
+import useLang from 'hooks/useLang';
+import LangProvider from '../LangContext';
+import contentText from './Lang/contentText.json';
+
 import styled from 'styled-components';
 import { nanoid } from 'nanoid';
 
@@ -13,8 +19,10 @@ import { nanoid } from 'nanoid';
 //       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
 
 function App() {
+  // console.log(data);
   const [contacts, setContacts] = useLocalStorage('contacts', []);
   const [filter, setFilter] = useState('');
+  // const [lang, setLang] = useState('ua');
 
   useEffect(() => {
     const contacts = window.localStorage.getItem('contacts');
@@ -28,6 +36,14 @@ function App() {
   useEffect(() => {
     window.localStorage.setItem('contacts', JSON.stringify(contacts));
   }, [contacts]);
+
+  const { lang } = useLang();
+  console.log(lang);
+
+  // useEffect(() => {
+  //   const title = contentText.title[lang];
+  //   // const contactsList = contentText.contacts[lang];
+  // }, [lang]);
 
   const addContact = (name, number) => {
     const person = {
@@ -55,17 +71,23 @@ function App() {
       contact.name.toLowerCase().includes(normalizedFilter)
     );
   };
+
+  const title = contentText.title[lang];
+  const contactsList = contentText.contacts[lang];
   return (
-    <Wrapper>
-      <Title>Phonebook</Title>
-      <Form onSubmit={addContact} contacts={contacts} />
-      <Title>Contacts</Title>
-      <Filter value={filter} onChange={changeFilter} />
-      <ContactList
-        contacts={visibleContacts()}
-        onDeleteContact={deleteContact}
-      />
-    </Wrapper>
+    <LangProvider>
+      <Wrapper>
+        <Title>{title}</Title>
+        <Lang />
+        <Form onSubmit={addContact} contacts={contacts} />
+        <Title>{contactsList}</Title>
+        <Filter value={filter} onChange={changeFilter} />
+        <ContactList
+          contacts={visibleContacts()}
+          onDeleteContact={deleteContact}
+        />
+      </Wrapper>
+    </LangProvider>
   );
 }
 

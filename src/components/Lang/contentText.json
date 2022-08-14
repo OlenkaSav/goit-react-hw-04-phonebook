@@ -1,0 +1,23 @@
+{
+  "title": {
+    "en": "Phonebook",
+    "ua": "Телефонна книга "
+  },
+  "contacts": {
+    "en": "Contacts",
+    "ua": "Контакти"
+  },
+
+  "filter": {
+    "en": "Filter",
+    "ua": "Знайти"
+  },
+  "addBtn": {
+    "en": "Add",
+    "ua": "Додати"
+  },
+  "delBtn": {
+    "en": "Delete",
+    "ua": "Видалити"
+  }
+}
