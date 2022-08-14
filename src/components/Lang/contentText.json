@@ -7,17 +7,39 @@
     "en": "Contacts",
     "ua": "Контакти"
   },
+  "name": {
+    "en": "Name",
+    "ua": "Ім'я"
+  },
+  "number": {
+    "en": "Number",
+    "ua": "Номер"
+  },
 
   "filter": {
-    "en": "Filter",
-    "ua": "Знайти"
+    "en": "Find contacts by name",
+    "ua": "Знайти за ім'ям"
   },
   "addBtn": {
-    "en": "Add",
+    "en": "Add contact",
     "ua": "Додати"
   },
   "delBtn": {
     "en": "Delete",
     "ua": "Видалити"
+  },
+
+  "notification1": {
+    "en": "Hey!",
+    "ua": "Гей!"
+  },
+
+  "notification2": {
+    "en": "  seems is already in your contact list...",
+    "ua": "  здається уже є в твоїх контактах..."
+  },
+  "notification3": {
+    "en": "OK",
+    "ua": "Добре"
   }
 }

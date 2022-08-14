@@ -1,13 +1,24 @@
 import React from 'react';
+import useLang from 'hooks/useLang';
+import contentText from '../Lang/contentText.json';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const Filter = ({ value, onChange }) => (
-  <StyledLable>
-    Find contacts by name
-    <StyledInput type="text" name="filter" value={value} onChange={onChange} />
-  </StyledLable>
-);
+const Filter = ({ value, onChange }) => {
+  const { lang } = useLang();
+  const filterLable = contentText.filter[lang];
+  return (
+    <StyledLable>
+      {filterLable}
+      <StyledInput
+        type="text"
+        name="filter"
+        value={value}
+        onChange={onChange}
+      />
+    </StyledLable>
+  );
+};
 
 Filter.propTypes = {
   value: PropTypes.string,
@@ -18,8 +29,8 @@ const StyledLable = styled.label`
   display: flex;
   align-items: center;
   margin: 10px 0px;
-  font-size: 45px;
-  font-weight: 500;
+  font-size: 30px;
+  /* font-weight: 500; */
   color: #210672;
   text-shadow: 4px 2px 4px #e9f999;
 `;

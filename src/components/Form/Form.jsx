@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { langContext } from '../../LangContext';
+import contentText from '../Lang/contentText.json';
 // import { useForm } from 'react-hook-form';
 import { Report } from 'notiflix/build/notiflix-report-aio';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 function Form({ contacts, onSubmit }) {
+  const { lang } = useContext(langContext);
+  console.log(lang);
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -21,15 +25,13 @@ function Form({ contacts, onSubmit }) {
         return;
     }
   };
-
+  const notification1 = contentText.notification1[lang];
+  const notification2 = contentText.notification2[lang];
+  const notification3 = contentText.notification3[lang];
   const handleSubmit = e => {
     e.preventDefault();
     if (contacts.find(contact => contact.name === name)) {
-      Report.warning(
-        'Hey!',
-        `Seems ${name} is already in your contact list...`,
-        'OK'
-      );
+      Report.warning(notification1, `${name}` + notification2, notification3);
       return;
     }
 
@@ -42,10 +44,13 @@ function Form({ contacts, onSubmit }) {
     setNumber('');
   };
 
+  const nameContact = contentText.name[lang];
+  const numberContact = contentText.number[lang];
+  const addBtn = contentText.addBtn[lang];
   return (
     <StyledForm onSubmit={handleSubmit}>
       <StyledLable>
-        Name
+        {nameContact}
         <StyledInput
           type="text"
           name="name"
@@ -57,7 +62,7 @@ function Form({ contacts, onSubmit }) {
         />
       </StyledLable>
       <StyledLable>
-        Number
+        {numberContact}
         <StyledInput
           type="tel"
           name="number"
@@ -69,7 +74,7 @@ function Form({ contacts, onSubmit }) {
         />
       </StyledLable>
       <StyledBtn type="submit" disabled={!name || !number}>
-        Add contact
+        {addBtn}
       </StyledBtn>
     </StyledForm>
   );
@@ -83,14 +88,15 @@ const StyledForm = styled.form`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 10px 0;
 `;
 
 const StyledLable = styled.label`
   display: flex;
   align-items: center;
   margin: 10px 0px;
-  font-size: 45px;
-  font-weight: 500;
+  font-size: 30px;
+  /* font-weight: 500; */
   color: #210672;
   text-shadow: 4px 2px 4px #e9f999;
 `;
@@ -108,7 +114,7 @@ const StyledInput = styled.input`
 
 const StyledBtn = styled.button`
   font-family: inherit;
-  font-size: 40px;
+  font-size: 25px;
   color: ${props => (props.disabled ? `#7c7a7a` : ` #210672`)};
   width: 150px;
   height: 50px;

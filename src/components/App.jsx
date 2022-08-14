@@ -7,7 +7,8 @@ import Filter from './Filter';
 
 import Lang from './Lang';
 import useLang from 'hooks/useLang';
-import LangProvider from '../LangContext';
+
+// import LangProvider from '../LangContext';
 import contentText from './Lang/contentText.json';
 
 import styled from 'styled-components';
@@ -26,7 +27,7 @@ function App() {
 
   useEffect(() => {
     const contacts = window.localStorage.getItem('contacts');
-    console.log(contacts);
+    // console.log(contacts);
     const parsedContacts = JSON.parse(contacts);
     if (parsedContacts) {
       setContacts(parsedContacts);
@@ -38,6 +39,7 @@ function App() {
   }, [contacts]);
 
   const { lang } = useLang();
+  // const lang = useContext(langContext);
   console.log(lang);
 
   // useEffect(() => {
@@ -75,23 +77,22 @@ function App() {
   const title = contentText.title[lang];
   const contactsList = contentText.contacts[lang];
   return (
-    <LangProvider>
-      <Wrapper>
-        <Title>{title}</Title>
-        <Lang />
-        <Form onSubmit={addContact} contacts={contacts} />
-        <Title>{contactsList}</Title>
-        <Filter value={filter} onChange={changeFilter} />
-        <ContactList
-          contacts={visibleContacts()}
-          onDeleteContact={deleteContact}
-        />
-      </Wrapper>
-    </LangProvider>
+    <Wrapper>
+      <Title>{title}</Title>
+      <Lang />
+      <Form onSubmit={addContact} contacts={contacts} />
+      <Title>{contactsList}</Title>
+      <Filter value={filter} onChange={changeFilter} />
+      <ContactList
+        contacts={visibleContacts()}
+        onDeleteContact={deleteContact}
+      />
+    </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
+  position: relative;
   border: 1px solid black;
   width: 800px;
   margin: 20px auto;
@@ -104,9 +105,9 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.h2`
-  font-size: 60px;
+  font-size: 40px;
   color: #210672;
   text-shadow: 4px 2px 4px #e9f999;
-  font-style: italic;
 `;
+
 export default memo(App);
